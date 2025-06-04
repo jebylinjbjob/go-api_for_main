@@ -1,0 +1,39 @@
+{
+    "formatOnSave": true,
+    "editor.tabSize": 4,
+    "go.formatTool": "gofmt",
+    "go.lintTool": "golangci-lint",
+    "go.useLanguageServer": true,
+    "go.buildOnSave": "workspace",
+    "go.testOnSave": false,
+    "go.coverOnSave": false,
+    "go.vetOnSave": "workspace",
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/tmp": true,
+        "**/*.exe": true,
+        "**/debug": true
+    },
+    "search.exclude": {
+        "**/vendor": true,
+        "**/node_modules": true,
+        "**/*.sum": true
+    },
+    "files.associations": {
+        "*.go": "go",
+        "go.mod": "go",
+        "go.sum": "go"
+    },
+    "swagger": {
+        "generateOnSave": true,
+        "outputDirectory": "./docs",
+        "excludeDeprecated": true
+    }
+} 
