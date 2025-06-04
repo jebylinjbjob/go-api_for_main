@@ -1,128 +1,128 @@
-# 🌈 可愛的 Go API 專案 ʕ •ᴥ•ʔ
+# 🌈 Adorable Go API Project ʕ •ᴥ•ʔ
 
-歡迎來到我們充滿愛的 Go API 小天地！這是一個使用 Gin 框架和 MongoDB 的超級可愛 RESTful API 專案 ✨
-讓我們一起來管理用戶數據，創造一個溫馨快樂的後端服務吧！(◕‿◕✿)
+Welcome to our love-filled Go API wonderland! This is a super cute RESTful API project using Gin framework and MongoDB ✨
+Let's manage user data together and create a warm and happy backend service! (◕‿◕✿)
 
-## 🎨 特色功能
+## 🎨 Special Features
 
-- 🌟 漂亮的 RESTful API 設計
-- 🍃 MongoDB 數據小倉庫
-- 📚 可愛的 Swagger API 文檔
-- 🎯 溫柔的錯誤處理機制
-- 🧪 貼心的單元測試
-- 📝 細心的日誌記錄
+- 🌟 Beautiful RESTful API design
+- 🍃 MongoDB data storage
+- 📚 Cute Swagger API documentation
+- 🎯 Gentle error handling mechanism
+- 🧪 Thoughtful unit testing
+- 📝 Detailed logging
 
-## 🎮 開始冒險前的準備
+## 🎮 Preparation for Adventure
 
-請確保你有這些小夥伴：
-- 🚀 Go 1.21+ 的魔法工具
-- 🗄️ MongoDB 的神奇數據庫
-- 🐙 Git 的版本控制寶貝
+Make sure you have these companions:
+- 🚀 Go 1.21+ magic tools
+- 🗄️ MongoDB magical database
+- 🐙 Git version control buddy
 
-## 🌱 種下專案的種子
+## 🌱 Plant the Project Seed
 
-1. 首先，把專案帶回家：
+1. First, bring the project home:
 ```bash
 git clone [your-repository-url]
 cd go-api_for_main
 ```
 
-2. 召喚所需的小精靈：
+2. Summon the required sprites:
 ```bash
 go mod download
 ```
 
-3. 確保 MongoDB 小精靈已經醒來了（他喜歡待在 27017 端口）
+3. Make sure the MongoDB sprite is awake (it likes to stay at port 27017)
 
-4. 讓專案綻放光芒：
+4. Let the project shine:
 ```bash
 go run main.go
 ```
 
-## 🎯 API 小精靈們
+## 🎯 API Sprites
 
-### 👥 用戶管理小隊
-- `GET /api/v1/users` - 召喚所有用戶 ✨
-- `POST /api/v1/users` - 創造新的小夥伴 🎉
-- `GET /api/v1/users/:id` - 尋找特定的朋友 🔍
-- `PUT /api/v1/users/:id` - 幫朋友換新衣服 👕
-- `DELETE /api/v1/users/:id` - 說再見（揮手） 👋
+### 👥 User Management Squad
+- `GET /api/v1/users` - Summon all users ✨
+- `POST /api/v1/users` - Create new friends 🎉
+- `GET /api/v1/users/:id` - Find specific friend 🔍
+- `PUT /api/v1/users/:id` - Help friend change clothes 👕
+- `DELETE /api/v1/users/:id` - Say goodbye (wave) 👋
 
-### 🎪 系統小天地
-- `GET /ping` - 戳戳看我們是否還醒著 👉
-- `GET /swagger/*any` - 翻閱我們的魔法書 📖
+### 🎪 System World
+- `GET /ping` - Poke to see if we're awake 👉
+- `GET /swagger/*any` - Browse our magic book 📖
 
-## 📚 魔法使用說明書
+## 📚 Magic User Manual
 
-想看看更多魔法嗎？運行服務後訪問：
+Want to see more magic? After running the service, visit:
 ```
 http://localhost:8080/swagger/index.html
 ```
 
-## 🧪 測試小實驗室
+## 🧪 Testing Laboratory
 
-測試所有的魔法：
+Test all magic:
 ```bash
 go test ./... -v
 ```
 
-測試特定的咒語：
+Test specific spells:
 ```bash
 go test ./test -v
 ```
 
-## 🏰 專案城堡結構
+## 🏰 Project Castle Structure
 
 ```
 .
-├── controllers/     # 🎮 控制中心
-├── models/         # 📝 數據模型小屋
-├── routes/         # 🛣️ 路線圖
-├── docs/          # 📚 魔法書庫
-├── test/          # 🧪 實驗室
-├── main.go        # 🎯 主要入口
-└── README.md      # 📖 使用說明書
+├── controllers/     # 🎮 Control center
+├── models/         # 📝 Data model house
+├── routes/         # 🛣️ Route map
+├── docs/          # 📚 Magic library
+├── test/          # 🧪 Laboratory
+├── main.go        # 🎯 Main entrance
+└── README.md      # 📖 User manual
 ```
 
-## 🎨 錯誤處理小幫手
+## 🎨 Error Handling Helper
 
-我們用不同的表情來表達不同的情況：
+We use different expressions for different situations:
 
-- 200: ✅ 成功啦！
-- 400: ❌ 哎呀，請求有點問題
-- 404: 🔍 找不到想要的東西
-- 500: 😱 服務器打了個噴嚏
-- 503: 🏥 數據庫小精靈在休息
+- 200: ✅ Success!
+- 400: ❌ Oops, request has an issue
+- 404: 🔍 Can't find what you want
+- 500: 😱 Server sneezed
+- 503: 🏥 Database sprite is resting
 
-## 🎛️ 環境設定小工具
+## 🎛️ Environment Setting Tools
 
-- `MONGODB_URI`: MongoDB 小精靈的家（預設是 mongodb://localhost:27017）
-- `PORT`: 服務開門的地方（預設是 8080 號門）
+- `MONGODB_URI`: MongoDB sprite's home (default is mongodb://localhost:27017)
+- `PORT`: Service door location (default is port 8080)
 
-## 🚧 正在建設中的新設施
+## 🚧 New Facilities Under Construction
 
-- 🔐 用戶認證和授權系統
-- 🚦 請求速率限制器
-- 💾 快取記憶空間
-- ✨ 更多數據驗證魔法
-- 📤 文件上傳傳送門
+- 🔐 User authentication and authorization system
+- 🚦 Request rate limiter
+- 💾 Cache memory space
+- ✨ More data validation magic
+- 📤 File upload portal
 
-## 🌟 加入我們的冒險
+## 🌟 Join Our Adventure
 
-想要一起創造魔法嗎？
+Want to create magic together?
 
-1. 🍴 Fork 一個自己的分支
-2. 🌱 創造新的特性
-3. ✨ 提交你的魔法
-4. 🚀 推送到你的分支
-5. 🎉 發起 Pull Request
+1. 🍴 Fork your own branch
+2. 🌱 Create new features
+3. ✨ Submit your magic
+4. 🚀 Push to your branch
+5. 🎉 Create Pull Request
 
-## 📜 神奇許可證
+## 📜 Magic License
 
-MIT License （充滿愛的開源許可證 💝）
+MIT License (Love-filled open source license 💝)
 
 ---
-用 ❤️ 製作，希望你也能感受到這份溫暖！ (｡♥‿♥｡) 
+Made with ❤️, hope you can feel the warmth too! (｡♥‿♥｡) 
 
 
 [![image](https://github.com/jebylinjbjob/go-api_for_main/blob/main/ICON.jpeg))](https://github.com/jebylinjbjob/go-api_for_main/blob/main/ICON.jpeg)
