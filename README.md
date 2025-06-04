@@ -96,8 +96,24 @@ We use different expressions for different situations:
 
 ## 🎛️ Environment Setting Tools
 
+### 🗄️ MongoDB Settings
 - `MONGODB_URI`: MongoDB sprite's home (default is mongodb://localhost:27017)
+- `MONGODB_DATABASE`: Database name (default is go_api_db)
+- `MONGODB_USERNAME`: MongoDB authentication username (optional)
+- `MONGODB_PASSWORD`: MongoDB authentication password (optional)
+- `MONGODB_TIMEOUT`: MongoDB connection timeout in seconds (default is 10)
+
+💫 **MongoDB Security Tips**:
+1. Two ways to provide MongoDB authentication:
+   - Using `MONGODB_USERNAME` and `MONGODB_PASSWORD` environment variables
+   - Or directly in `MONGODB_URI` like: `mongodb://username:password@localhost:27017`
+2. Recommended to store these secrets in a `.env` file
+3. Never commit passwords to Git repository
+4. Use a proper secrets management system in production
+
+### 🖥️ Server Settings
 - `PORT`: Service door location (default is port 8080)
+- `GIN_MODE`: Server running mode (default is debug)
 
 ## 🚧 New Facilities Under Construction
 

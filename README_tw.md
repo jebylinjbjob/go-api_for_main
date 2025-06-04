@@ -96,8 +96,24 @@ go test ./test -v
 
 ## 🎛️ 環境設定小工具
 
+### 🗄️ MongoDB 設定
 - `MONGODB_URI`: MongoDB 小精靈的家（預設是 mongodb://localhost:27017）
+- `MONGODB_DATABASE`: 數據庫的名字（預設是 go_api_db）
+- `MONGODB_USERNAME`: MongoDB 小精靈的用戶名（選填）
+- `MONGODB_PASSWORD`: MongoDB 小精靈的通關密語（選填）
+- `MONGODB_TIMEOUT`: 等待 MongoDB 小精靈回應的時間（預設是 10 秒）
+
+💫 **MongoDB 安全小貼士**:
+1. 有兩種方式可以告訴 MongoDB 小精靈你是誰：
+   - 使用 `MONGODB_USERNAME` 和 `MONGODB_PASSWORD` 兩個小精靈
+   - 或是直接在 `MONGODB_URI` 中寫入，像這樣：`mongodb://username:password@localhost:27017`
+2. 建議把這些神秘咒語放在 `.env` 檔案中
+3. 千萬不要把密碼放進 Git 倉庫哦
+4. 在正式環境中，最好使用專門的秘密保管系統
+
+### 🖥️ 服務器設定
 - `PORT`: 服務開門的地方（預設是 8080 號門）
+- `GIN_MODE`: 服務運行模式（預設是 debug 模式）
 
 ## 🚧 正在建設中的新設施
 
