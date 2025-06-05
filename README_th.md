@@ -23,7 +23,7 @@
 
 1. ก่อนอื่น นำโปรเจคกลับบ้าน:
 ```bash
-git clone [your-repository-url]
+git clone https://github.com/jebylinjbjob/go-api_for_main.git
 cd go-api_for_main
 ```
 
