@@ -52,6 +52,18 @@ go run main.go
 - `GET /ping` - Poke to see if we're awake 👉
 - `GET /swagger/*any` - Browse our magic book 📖
 
+### 🧪 Testing Environment
+
+In testing, we change the magic path from v1 to test, let's play together!
+
+Here are the test environment sprites:
+- `GET /api/test/users` - Call test users to play 🎈
+- `POST /api/test/users` - Invite new friends to play 🎪
+- `GET /api/test/users/:id` - Find who's playing 🔮
+- `PUT /api/test/users/:id` - Let friends change their style 🎭
+- `DELETE /api/test/users/:id` - Play hide and seek (for now, say goodbye) 🎪
+
+
 ## 📚 Magic User Manual
 
 Want to see more magic? After running the service, visit:

@@ -52,6 +52,17 @@ go run main.go
 - `GET /ping` - 戳戳看我們是否還醒著 👉
 - `GET /swagger/*any` - 翻閱我們的魔法書 📖
 
+### 🧪 測試環境小天地
+在測試時，我們把魔法路徑從 v1 變成 test，讓我們一起來玩耍吧！
+
+以下是測試環境的小精靈們：
+- `GET /api/test/users` - 呼喚測試用戶來玩耍 🎈
+- `POST /api/test/users` - 邀請新朋友加入遊戲 🎪
+- `GET /api/test/users/:id` - 找找看誰來玩了 🔮
+- `PUT /api/test/users/:id` - 讓朋友換個造型玩玩 🎭
+- `DELETE /api/test/users/:id` - 跟朋友玩捉迷藏（暫時說掰掰）🎪
+
+
 ## 📚 魔法使用說明書
 
 想看看更多魔法嗎？運行服務後訪問：
