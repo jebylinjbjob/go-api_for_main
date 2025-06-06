@@ -5,6 +5,8 @@ import (
 	"errors"
 	"net/http"
 
+	user_models "go-api_for_main/models/user_models"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,25 +15,6 @@ import (
 
 var userCollection *mongo.Collection
 var ErrMongoDBNotConnected = errors.New("MongoDB is not connected")
-
-// ErrorResponse 錯誤響應結構
-type ErrorResponse struct {
-	Error string `json:"error" example:"error message"`
-}
-
-// SuccessResponse 成功響應結構
-type SuccessResponse struct {
-	Message string `json:"message" example:"operation successful"`
-}
-
-// User 模型
-// @Description 用戶模型
-type User struct {
-	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty" example:"507f1f77bcf86cd799439011"`
-	Name     string             `bson:"name" json:"name" binding:"required" example:"張三"`
-	Email    string             `bson:"email" json:"email" binding:"required,email" example:"zhangsan@example.com"`
-	Password string             `bson:"password" json:"-" binding:"required"` // 密碼不會在 JSON 中返回
-}
 
 // SetupUserController 初始化用戶控制器
 func SetupUserController(db *mongo.Database) {
@@ -58,20 +41,20 @@ func checkMongoDBConnection() error {
 // @Router /users [get]
 func GetUsers(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, ErrorResponse{Error: "Database service is currently unavailable"})
+		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
 		return
 	}
 
-	var users []User
+	var users []user_models.User
 	cursor, err := userCollection.Find(context.Background(), bson.M{})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 	defer cursor.Close(context.Background())
 
 	if err = cursor.All(context.Background(), &users); err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
@@ -100,19 +83,19 @@ func GetUsers_test(c *gin.Context) {
 // @Router /users [post]
 func CreateUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, ErrorResponse{Error: "Database service is currently unavailable"})
+		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
 		return
 	}
 
-	var user User
+	var user user_models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
 	result, err := userCollection.InsertOne(context.Background(), user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
@@ -144,24 +127,24 @@ func CreateUser_test(c *gin.Context) {
 // @Router /users/{id} [get]
 func GetUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, ErrorResponse{Error: "Database service is currently unavailable"})
+		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
 		return
 	}
 
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid ID"})
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: "Invalid ID"})
 		return
 	}
 
-	var user User
+	var user user_models.User
 	err = userCollection.FindOne(context.Background(), bson.M{"_id": id}).Decode(&user)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			c.JSON(http.StatusNotFound, ErrorResponse{Error: "User not found"})
+			c.JSON(http.StatusNotFound, user_models.ErrorResponse{Error: "User not found"})
 			return
 		}
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
@@ -196,19 +179,19 @@ func GetUser_test(c *gin.Context) {
 // @Router /users/{id} [put]
 func UpdateUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, ErrorResponse{Error: "Database service is currently unavailable"})
+		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
 		return
 	}
 
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid ID"})
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: "Invalid ID"})
 		return
 	}
 
-	var user User
+	var user user_models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
@@ -221,16 +204,16 @@ func UpdateUser(c *gin.Context) {
 
 	result, err := userCollection.UpdateOne(context.Background(), bson.M{"_id": id}, update)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
 	if result.MatchedCount == 0 {
-		c.JSON(http.StatusNotFound, ErrorResponse{Error: "User not found"})
+		c.JSON(http.StatusNotFound, user_models.ErrorResponse{Error: "User not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, SuccessResponse{Message: "User updated successfully"})
+	c.JSON(http.StatusOK, user_models.SuccessResponse{Message: "User updated successfully"})
 }
 
 func UpdateUser_test(c *gin.Context) {
@@ -258,28 +241,28 @@ func UpdateUser_test(c *gin.Context) {
 // @Router /users/{id} [delete]
 func DeleteUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, ErrorResponse{Error: "Database service is currently unavailable"})
+		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
 		return
 	}
 
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid ID"})
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: "Invalid ID"})
 		return
 	}
 
 	result, err := userCollection.DeleteOne(context.Background(), bson.M{"_id": id})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
 	if result.DeletedCount == 0 {
-		c.JSON(http.StatusNotFound, ErrorResponse{Error: "User not found"})
+		c.JSON(http.StatusNotFound, user_models.ErrorResponse{Error: "User not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, SuccessResponse{Message: "User deleted successfully"})
+	c.JSON(http.StatusOK, user_models.SuccessResponse{Message: "User deleted successfully"})
 }
 
 func DeleteUser_test(c *gin.Context) {
