@@ -80,7 +80,10 @@ func GetUsers(c *gin.Context) {
 
 func GetUsers_test(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "test users",
+		"users_name":    "test users",
+		"user_id":       "1234567890",
+		"user_email":    "test@example.com",
+		"user_password": "1234567890",
 	})
 }
 
@@ -119,7 +122,11 @@ func CreateUser(c *gin.Context) {
 
 func CreateUser_test(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "test users",
+		"users_name":    "test users",
+		"user_id":       "1234567890",
+		"user_email":    "test@example.com",
+		"user_password": "1234567890",
+		"status":        "success",
 	})
 }
 
@@ -162,8 +169,15 @@ func GetUser(c *gin.Context) {
 }
 
 func GetUser_test(c *gin.Context) {
+
+	user_id := c.Param("id")
 	c.JSON(http.StatusOK, gin.H{
-		"message": "test users",
+		"users_name":    "test users",
+		"user_id":       user_id,
+		"user_email":    "test@example.com",
+		"user_password": "1234567890",
+		"status":        "success",
+		"is_find":       true,
 	})
 }
 
@@ -221,7 +235,12 @@ func UpdateUser(c *gin.Context) {
 
 func UpdateUser_test(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "test users",
+		"users_name":    "test users",
+		"user_id":       "1234567890",
+		"user_email":    "test@example.com",
+		"user_password": "1234567890",
+		"status":        "success",
+		"is_update":     true,
 	})
 }
 
@@ -265,6 +284,11 @@ func DeleteUser(c *gin.Context) {
 
 func DeleteUser_test(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "test users",
+		"users_name":    "test users",
+		"user_id":       "1234567890",
+		"user_email":    "test@example.com",
+		"user_password": "1234567890",
+		"status":        "success",
+		"is_delete":     true,
 	})
 }

@@ -31,8 +31,8 @@ func SetupRouter(r *gin.Engine) {
 		users := test.Group("/users")
 		{
 			users.GET("/", controllers.GetUsers_test)         // 獲取所有用戶
-			users.POST("/", controllers.CreateUser_test)      // 創建用戶
 			users.GET("/:id", controllers.GetUser_test)       // 獲取特定用戶
+			users.POST("/", controllers.CreateUser_test)      // 創建用戶
 			users.PUT("/:id", controllers.UpdateUser_test)    // 更新用戶
 			users.DELETE("/:id", controllers.DeleteUser_test) // 刪除用戶
 
