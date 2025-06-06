@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"time"
 
-	user_models "go-api_for_main/models/user_models"
+	user_models "go-api_for_main/models"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -62,12 +63,23 @@ func GetUsers(c *gin.Context) {
 }
 
 func GetUsers_test(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"users_name":    "test users",
-		"user_id":       "1234567890",
-		"user_email":    "test@example.com",
-		"user_password": "1234567890",
+
+	var users []user_models.User
+
+	users = append(users, user_models.User{
+		ID:        primitive.NewObjectID(),
+		Name:      "test users",
+		Email:     "test@example.com",
+		Password:  "1234567890",
+		Sex:       "男",
+		Age:       20,
+		Phone:     "1234567890",
+		Address:   "台北市",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	})
+
+	c.JSON(http.StatusOK, users)
 }
 
 // CreateUser godoc
@@ -104,13 +116,23 @@ func CreateUser(c *gin.Context) {
 }
 
 func CreateUser_test(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"users_name":    "test users",
-		"user_id":       "1234567890",
-		"user_email":    "test@example.com",
-		"user_password": "1234567890",
-		"status":        "success",
-	})
+
+	var user user_models.User
+
+	user = user_models.User{
+		ID:        primitive.NewObjectID(),
+		Name:      "test users",
+		Email:     "test@example.com",
+		Password:  "1234567890",
+		Sex:       "男",
+		Age:       20,
+		Phone:     "1234567890",
+		Address:   "台北市",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 // GetUser godoc
@@ -152,16 +174,29 @@ func GetUser(c *gin.Context) {
 }
 
 func GetUser_test(c *gin.Context) {
+	id := c.Param("id")
 
-	user_id := c.Param("id")
-	c.JSON(http.StatusOK, gin.H{
-		"users_name":    "test users",
-		"user_id":       user_id,
-		"user_email":    "test@example.com",
-		"user_password": "1234567890",
-		"status":        "success",
-		"is_find":       true,
-	})
+	// 將字符串ID轉換為ObjectID
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: "Invalid ID"})
+		return
+	}
+
+	user := user_models.User{
+		ID:        objectID,
+		Name:      "test users",
+		Email:     "test@example.com",
+		Password:  "1234567890",
+		Sex:       "男",
+		Age:       20,
+		Phone:     "1234567890",
+		Address:   "台北市",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 // UpdateUser godoc
@@ -217,14 +252,36 @@ func UpdateUser(c *gin.Context) {
 }
 
 func UpdateUser_test(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"users_name":    "test users",
-		"user_id":       "1234567890",
-		"user_email":    "test@example.com",
-		"user_password": "1234567890",
-		"status":        "success",
-		"is_update":     true,
-	})
+	id := c.Param("id")
+
+	// 將字符串ID轉換為ObjectID
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: "Invalid ID"})
+		return
+	}
+
+	var updateUser user_models.User
+	if err := c.ShouldBindJSON(&updateUser); err != nil {
+		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: err.Error()})
+		return
+	}
+
+	// 模擬更新後的用戶數據
+	user := user_models.User{
+		ID:        objectID,
+		Name:      updateUser.Name,
+		Email:     updateUser.Email,
+		Password:  "1234567890",
+		Sex:       "男",
+		Age:       20,
+		Phone:     "1234567890",
+		Address:   "台北市",
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	c.JSON(http.StatusOK, user)
 }
 
 // DeleteUser godoc
@@ -266,12 +323,6 @@ func DeleteUser(c *gin.Context) {
 }
 
 func DeleteUser_test(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"users_name":    "test users",
-		"user_id":       "1234567890",
-		"user_email":    "test@example.com",
-		"user_password": "1234567890",
-		"status":        "success",
-		"is_delete":     true,
-	})
+	// 在測試環境中，直接返回刪除成功的訊息
+	c.JSON(http.StatusOK, user_models.SuccessResponse{Message: "User deleted successfully"})
 }
