@@ -78,6 +78,12 @@ func GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+func GetUsers_test(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "test users",
+	})
+}
+
 // CreateUser godoc
 // @Summary 創建新用戶
 // @Description 創建一個新的用戶
@@ -109,6 +115,12 @@ func CreateUser(c *gin.Context) {
 
 	user.ID = result.InsertedID.(primitive.ObjectID)
 	c.JSON(http.StatusCreated, user)
+}
+
+func CreateUser_test(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "test users",
+	})
 }
 
 // GetUser godoc
@@ -147,6 +159,12 @@ func GetUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+func GetUser_test(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "test users",
+	})
 }
 
 // UpdateUser godoc
@@ -201,6 +219,12 @@ func UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, SuccessResponse{Message: "User updated successfully"})
 }
 
+func UpdateUser_test(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "test users",
+	})
+}
+
 // DeleteUser godoc
 // @Summary 刪除用戶
 // @Description 刪除特定用戶
@@ -237,4 +261,10 @@ func DeleteUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, SuccessResponse{Message: "User deleted successfully"})
+}
+
+func DeleteUser_test(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "test users",
+	})
 }
