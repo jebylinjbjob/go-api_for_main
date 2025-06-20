@@ -12,18 +12,18 @@ type HATEOASLink struct {
 // UserResponse 為符合 HATEOAS 的使用者響應結構
 // @Description 符合 HATEOAS 的使用者響應結構
 type UserResponse struct {
-	Data  User          `json:"data"`                           // 使用者資料
-	Links []HATEOASLink `json:"_links" example:"[{...},{...}]"` // HATEOAS 連結
+	Data  User          `json:"data"`   // 使用者資料
+	Links []HATEOASLink `json:"_links"` // HATEOAS 連結
 }
 
 // UsersCollectionResponse 為包含多個使用者的 HATEOAS 響應結構
 // @Description 符合 HATEOAS 的多使用者響應結構
 type UsersCollectionResponse struct {
-	Data  []User        `json:"data"`                           // 使用者資料陣列
-	Links []HATEOASLink `json:"_links" example:"[{...},{...}]"` // HATEOAS 連結
-	Page  int           `json:"page" example:"1"`               // 頁碼
-	Size  int           `json:"size" example:"10"`              // 每頁大小
-	Total int           `json:"total" example:"100"`            // 總資料數
+	Data  []User        `json:"data"`                // 使用者資料陣列
+	Links []HATEOASLink `json:"_links"`              // HATEOAS 連結
+	Page  int           `json:"page" example:"1"`    // 頁碼
+	Size  int           `json:"size" example:"10"`   // 每頁大小
+	Total int           `json:"total" example:"100"` // 總資料數
 }
 
 // APIResponse 為通用 API 響應結構

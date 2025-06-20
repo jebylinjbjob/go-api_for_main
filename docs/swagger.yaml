@@ -1,20 +1,60 @@
 basePath: /api/v1
 definitions:
-  controllers.ErrorResponse:
+  user_models.APIResponse:
+    description: API 通用響應結構
     properties:
+      _links:
+        description: HATEOAS 連結 (可選)
+        items:
+          $ref: '#/definitions/user_models.HATEOASLink'
+        type: array
+      data:
+        description: 響應資料 (可選)
       error:
-        example: error message
+        description: 錯誤訊息 (可選)
+        example: 錯誤訊息
         type: string
-    type: object
-  controllers.SuccessResponse:
-    properties:
       message:
-        example: operation successful
+        description: 響應訊息
+        example: 操作成功
+        type: string
+      status:
+        description: HTTP 狀態碼
+        example: 200
+        type: integer
+    type: object
+  user_models.HATEOASLink:
+    description: HATEOAS 連結結構
+    properties:
+      href:
+        description: 連結目標 URL
+        example: http://api.example.com/users/1
+        type: string
+      method:
+        description: HTTP 方法
+        example: GET
+        type: string
+      rel:
+        description: 關係類型
+        example: self
+        type: string
+      title:
+        description: 連結描述
+        example: 取得使用者資訊
         type: string
     type: object
-  controllers.User:
+  user_models.User:
     description: 用戶模型
     properties:
+      address:
+        example: 台北市
+        type: string
+      age:
+        example: 20
+        type: integer
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
       email:
         example: zhangsan@example.com
         type: string
@@ -24,9 +64,61 @@ definitions:
       name:
         example: 張三
         type: string
+      phone:
+        example: "1234567890"
+        type: string
+      sex:
+        example: 男
+        type: string
+      updated_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
     required:
+    - address
+    - age
     - email
     - name
+    - phone
+    - sex
+    type: object
+  user_models.UserResponse:
+    description: 符合 HATEOAS 的使用者響應結構
+    properties:
+      _links:
+        description: HATEOAS 連結
+        items:
+          $ref: '#/definitions/user_models.HATEOASLink'
+        type: array
+      data:
+        allOf:
+        - $ref: '#/definitions/user_models.User'
+        description: 使用者資料
+    type: object
+  user_models.UsersCollectionResponse:
+    description: 符合 HATEOAS 的多使用者響應結構
+    properties:
+      _links:
+        description: HATEOAS 連結
+        items:
+          $ref: '#/definitions/user_models.HATEOASLink'
+        type: array
+      data:
+        description: 使用者資料陣列
+        items:
+          $ref: '#/definitions/user_models.User'
+        type: array
+      page:
+        description: 頁碼
+        example: 1
+        type: integer
+      size:
+        description: 每頁大小
+        example: 10
+        type: integer
+      total:
+        description: 總資料數
+        example: 100
+        type: integer
     type: object
 host: localhost:8080
 info:
@@ -46,13 +138,11 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/controllers.User'
-            type: array
+            $ref: '#/definitions/user_models.UsersCollectionResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
       summary: 獲取所有用戶
       tags:
       - users
@@ -66,22 +156,22 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/controllers.User'
+          $ref: '#/definitions/user_models.User'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/controllers.User'
+            $ref: '#/definitions/user_models.UserResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
       summary: 創建新用戶
       tags:
       - users
@@ -102,19 +192,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.SuccessResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
       summary: 刪除用戶
       tags:
       - users
@@ -134,19 +224,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.User'
+            $ref: '#/definitions/user_models.UserResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
       summary: 獲取特定用戶
       tags:
       - users
@@ -165,26 +255,26 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/controllers.User'
+          $ref: '#/definitions/user_models.User'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.SuccessResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: '#/definitions/user_models.APIResponse'
       summary: 更新用戶
       tags:
       - users

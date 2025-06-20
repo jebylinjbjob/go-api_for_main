@@ -37,8 +37,8 @@ func checkMongoDBConnection() error {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Success 200 {object} UsersCollectionResponse
-// @Failure 500 {object} APIResponse
+// @Success 200 {object} user_models.UsersCollectionResponse
+// @Failure 500 {object} user_models.APIResponse
 // @Router /users [get]
 func GetUsers(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
@@ -95,10 +95,10 @@ func GetUsers_test(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param user body User true "用戶信息"
-// @Success 201 {object} UserResponse
-// @Failure 400 {object} APIResponse
-// @Failure 500 {object} APIResponse
+// @Param user body user_models.User true "用戶信息"
+// @Success 201 {object} user_models.UserResponse
+// @Failure 400 {object} user_models.APIResponse
+// @Failure 500 {object} user_models.APIResponse
 // @Router /users [post]
 func CreateUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
@@ -149,10 +149,10 @@ func CreateUser_test(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "用戶ID"
-// @Success 200 {object} UserResponse
-// @Failure 400 {object} APIResponse
-// @Failure 404 {object} APIResponse
-// @Failure 500 {object} APIResponse
+// @Success 200 {object} user_models.UserResponse
+// @Failure 400 {object} user_models.APIResponse
+// @Failure 404 {object} user_models.APIResponse
+// @Failure 500 {object} user_models.APIResponse
 // @Router /users/{id} [get]
 func GetUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
@@ -212,11 +212,11 @@ func GetUser_test(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "用戶ID"
-// @Param user body User true "用戶信息"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Param user body user_models.User true "用戶信息"
+// @Success 200 {object} user_models.APIResponse
+// @Failure 400 {object} user_models.APIResponse
+// @Failure 404 {object} user_models.APIResponse
+// @Failure 500 {object} user_models.APIResponse
 // @Router /users/{id} [put]
 func UpdateUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
@@ -297,10 +297,10 @@ func UpdateUser_test(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "用戶ID"
-// @Success 200 {object} SuccessResponse
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Success 200 {object} user_models.APIResponse
+// @Failure 400 {object} user_models.APIResponse
+// @Failure 404 {object} user_models.APIResponse
+// @Failure 500 {object} user_models.APIResponse
 // @Router /users/{id} [delete]
 func DeleteUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {

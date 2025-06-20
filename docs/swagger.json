@@ -32,16 +32,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/controllers.User"
-                            }
+                            "$ref": "#/definitions/user_models.UsersCollectionResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     }
                 }
@@ -65,7 +62,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.User"
+                            "$ref": "#/definitions/user_models.User"
                         }
                     }
                 ],
@@ -73,19 +70,19 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/controllers.User"
+                            "$ref": "#/definitions/user_models.UserResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     }
                 }
@@ -117,25 +114,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.User"
+                            "$ref": "#/definitions/user_models.UserResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     }
                 }
@@ -166,7 +163,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controllers.User"
+                            "$ref": "#/definitions/user_models.User"
                         }
                     }
                 ],
@@ -174,25 +171,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.SuccessResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     }
                 }
@@ -222,25 +219,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.SuccessResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
+                            "$ref": "#/definitions/user_models.APIResponse"
                         }
                     }
                 }
@@ -248,32 +245,87 @@
         }
     },
     "definitions": {
-        "controllers.ErrorResponse": {
+        "user_models.APIResponse": {
+            "description": "API 通用響應結構",
             "type": "object",
             "properties": {
+                "_links": {
+                    "description": "HATEOAS 連結 (可選)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/user_models.HATEOASLink"
+                    }
+                },
+                "data": {
+                    "description": "響應資料 (可選)"
+                },
                 "error": {
+                    "description": "錯誤訊息 (可選)",
                     "type": "string",
-                    "example": "error message"
+                    "example": "錯誤訊息"
+                },
+                "message": {
+                    "description": "響應訊息",
+                    "type": "string",
+                    "example": "操作成功"
+                },
+                "status": {
+                    "description": "HTTP 狀態碼",
+                    "type": "integer",
+                    "example": 200
                 }
             }
         },
-        "controllers.SuccessResponse": {
+        "user_models.HATEOASLink": {
+            "description": "HATEOAS 連結結構",
             "type": "object",
             "properties": {
-                "message": {
+                "href": {
+                    "description": "連結目標 URL",
                     "type": "string",
-                    "example": "operation successful"
+                    "example": "http://api.example.com/users/1"
+                },
+                "method": {
+                    "description": "HTTP 方法",
+                    "type": "string",
+                    "example": "GET"
+                },
+                "rel": {
+                    "description": "關係類型",
+                    "type": "string",
+                    "example": "self"
+                },
+                "title": {
+                    "description": "連結描述",
+                    "type": "string",
+                    "example": "取得使用者資訊"
                 }
             }
         },
-        "controllers.User": {
+        "user_models.User": {
             "description": "用戶模型",
             "type": "object",
             "required": [
+                "address",
+                "age",
                 "email",
-                "name"
+                "name",
+                "phone",
+                "sex"
             ],
             "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "台北市"
+                },
+                "age": {
+                    "type": "integer",
+                    "example": 20
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2021-01-01T00:00:00Z"
+                },
                 "email": {
                     "type": "string",
                     "example": "zhangsan@example.com"
@@ -285,6 +337,74 @@
                 "name": {
                     "type": "string",
                     "example": "張三"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "男"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2021-01-01T00:00:00Z"
+                }
+            }
+        },
+        "user_models.UserResponse": {
+            "description": "符合 HATEOAS 的使用者響應結構",
+            "type": "object",
+            "properties": {
+                "_links": {
+                    "description": "HATEOAS 連結",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/user_models.HATEOASLink"
+                    }
+                },
+                "data": {
+                    "description": "使用者資料",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/user_models.User"
+                        }
+                    ]
+                }
+            }
+        },
+        "user_models.UsersCollectionResponse": {
+            "description": "符合 HATEOAS 的多使用者響應結構",
+            "type": "object",
+            "properties": {
+                "_links": {
+                    "description": "HATEOAS 連結",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/user_models.HATEOASLink"
+                    }
+                },
+                "data": {
+                    "description": "使用者資料陣列",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/user_models.User"
+                    }
+                },
+                "page": {
+                    "description": "頁碼",
+                    "type": "integer",
+                    "example": 1
+                },
+                "size": {
+                    "description": "每頁大小",
+                    "type": "integer",
+                    "example": 10
+                },
+                "total": {
+                    "description": "總資料數",
+                    "type": "integer",
+                    "example": 100
                 }
             }
         }
