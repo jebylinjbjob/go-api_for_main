@@ -11,6 +11,7 @@
 - 🎯 溫柔的錯誤處理機制
 - 🧪 貼心的單元測試
 - 📝 細心的日誌記錄
+- 🔄 符合 HATEOAS 原則的 API 響應，提供更好的探索性
 
 ## 🎮 開始冒險前的準備
 
@@ -88,11 +89,54 @@ go test ./test -v
 .
 ├── controllers/     # 🎮 控制中心
 ├── models/         # 📝 數據模型小屋
+│   ├── response.go  # 🔄 HATEOAS 響應結構
+│   └── user.go      # 👤 使用者資料模型
 ├── routes/         # 🛣️ 路線圖
 ├── docs/          # 📚 魔法書庫
 ├── test/          # 🧪 實驗室
 ├── main.go        # 🎯 主要入口
 └── README.md      # 📖 使用說明書
+```
+
+## 🔄 HATEOAS API 響應
+
+我們的 API 遵循 HATEOAS（Hypermedia as the Engine of Application State，超媒體作為應用程式狀態引擎）原則，讓客戶端可以透過超媒體連結動態地導航 API：
+
+- 🔗 所有響應都包含相關行為的連結
+- 🧭 客戶端可以透過響應中的連結發現可用的操作
+- 🔍 客戶端應用無需硬編碼 API 端點
+- 🎭 支援 API 的演化，只需對客戶端做最小的更改
+
+HATEOAS 響應範例：
+```json
+{
+  "data": {
+    "id": "507f1f77bcf86cd799439011",
+    "name": "張三",
+    "email": "zhangsan@example.com",
+    "age": 30
+  },
+  "_links": [
+    {
+      "href": "http://api.example.com/users/507f1f77bcf86cd799439011",
+      "rel": "self",
+      "method": "GET",
+      "title": "取得使用者資訊"
+    },
+    {
+      "href": "http://api.example.com/users/507f1f77bcf86cd799439011",
+      "rel": "update",
+      "method": "PUT",
+      "title": "更新使用者"
+    },
+    {
+      "href": "http://api.example.com/users/507f1f77bcf86cd799439011",
+      "rel": "delete",
+      "method": "DELETE",
+      "title": "刪除使用者"
+    }
+  ]
+}
 ```
 
 ## 🎨 錯誤處理小幫手

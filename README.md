@@ -11,6 +11,7 @@ Let's manage user data together and create a warm and happy backend service! (�
 - 🎯 Gentle error handling mechanism
 - 🧪 Thoughtful unit testing
 - 📝 Detailed logging
+- 🔄 HATEOAS-compliant API responses for better discoverability
 
 ## 🎮 Preparation for Adventure
 
@@ -89,11 +90,54 @@ go test ./test -v
 .
 ├── controllers/     # 🎮 Control center
 ├── models/         # 📝 Data model house
+│   ├── response.go  # 🔄 HATEOAS response structures
+│   └── user.go      # 👤 User data model
 ├── routes/         # 🛣️ Route map
 ├── docs/          # 📚 Magic library
 ├── test/          # 🧪 Laboratory
 ├── main.go        # 🎯 Main entrance
 └── README.md      # 📖 User manual
+```
+
+## 🔄 HATEOAS API Responses
+
+Our API follows the HATEOAS (Hypermedia as the Engine of Application State) principle, allowing clients to navigate the API dynamically through hypermedia links:
+
+- 🔗 All responses contain relevant links for possible actions
+- 🧭 Clients can discover available operations through response links
+- 🔍 No need to hardcode API endpoints in client applications
+- 🎭 Supports API evolution with minimal client changes
+
+Examples of our HATEOAS responses:
+```json
+{
+  "data": {
+    "id": "507f1f77bcf86cd799439011",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "age": 30
+  },
+  "_links": [
+    {
+      "href": "http://api.example.com/users/507f1f77bcf86cd799439011",
+      "rel": "self",
+      "method": "GET",
+      "title": "Get User Info"
+    },
+    {
+      "href": "http://api.example.com/users/507f1f77bcf86cd799439011",
+      "rel": "update",
+      "method": "PUT",
+      "title": "Update User"
+    },
+    {
+      "href": "http://api.example.com/users/507f1f77bcf86cd799439011",
+      "rel": "delete",
+      "method": "DELETE",
+      "title": "Delete User"
+    }
+  ]
+}
 ```
 
 ## 🎨 Error Handling Helper
