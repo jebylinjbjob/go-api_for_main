@@ -37,29 +37,36 @@ func checkMongoDBConnection() error {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Success 200 {array} User
-// @Failure 500 {object} ErrorResponse
+// @Success 200 {object} UsersCollectionResponse
+// @Failure 500 {object} APIResponse
 // @Router /users [get]
 func GetUsers(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
+		RespondWithAPIError(c, http.StatusServiceUnavailable, "Database service is currently unavailable")
 		return
 	}
+
+	// 獲取分頁參數
+	page := 1
+	size := 10
 
 	var users []user_models.User
 	cursor, err := userCollection.Find(context.Background(), bson.M{})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
+		RespondWithAPIError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	defer cursor.Close(context.Background())
 
 	if err = cursor.All(context.Background(), &users); err != nil {
-		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
+		RespondWithAPIError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
+	// 計算總記錄數
+	total := len(users)
+
+	RespondWithUsersHATEOAS(c, http.StatusOK, users, page, size, total)
 }
 
 func GetUsers_test(c *gin.Context) {
@@ -79,7 +86,7 @@ func GetUsers_test(c *gin.Context) {
 		UpdatedAt: time.Now(),
 	})
 
-	c.JSON(http.StatusOK, users)
+	RespondWithUsersHATEOAS(c, http.StatusOK, users, 1, 10, len(users))
 }
 
 // CreateUser godoc
@@ -89,30 +96,30 @@ func GetUsers_test(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param user body User true "用戶信息"
-// @Success 201 {object} User
-// @Failure 400 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Success 201 {object} UserResponse
+// @Failure 400 {object} APIResponse
+// @Failure 500 {object} APIResponse
 // @Router /users [post]
 func CreateUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
+		RespondWithAPIError(c, http.StatusServiceUnavailable, "Database service is currently unavailable")
 		return
 	}
 
 	var user user_models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: err.Error()})
+		RespondWithAPIError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	result, err := userCollection.InsertOne(context.Background(), user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
+		RespondWithAPIError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	user.ID = result.InsertedID.(primitive.ObjectID)
-	c.JSON(http.StatusCreated, user)
+	RespondWithUserHATEOAS(c, http.StatusCreated, user)
 }
 
 func CreateUser_test(c *gin.Context) {
@@ -132,7 +139,7 @@ func CreateUser_test(c *gin.Context) {
 		UpdatedAt: time.Now(),
 	}
 
-	c.JSON(http.StatusOK, user)
+	RespondWithUserHATEOAS(c, http.StatusCreated, user)
 }
 
 // GetUser godoc
@@ -142,20 +149,20 @@ func CreateUser_test(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "用戶ID"
-// @Success 200 {object} User
-// @Failure 400 {object} ErrorResponse
-// @Failure 404 {object} ErrorResponse
-// @Failure 500 {object} ErrorResponse
+// @Success 200 {object} UserResponse
+// @Failure 400 {object} APIResponse
+// @Failure 404 {object} APIResponse
+// @Failure 500 {object} APIResponse
 // @Router /users/{id} [get]
 func GetUser(c *gin.Context) {
 	if err := checkMongoDBConnection(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, user_models.ErrorResponse{Error: "Database service is currently unavailable"})
+		RespondWithAPIError(c, http.StatusServiceUnavailable, "Database service is currently unavailable")
 		return
 	}
 
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: "Invalid ID"})
+		RespondWithAPIError(c, http.StatusBadRequest, "Invalid ID")
 		return
 	}
 
@@ -163,14 +170,14 @@ func GetUser(c *gin.Context) {
 	err = userCollection.FindOne(context.Background(), bson.M{"_id": id}).Decode(&user)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			c.JSON(http.StatusNotFound, user_models.ErrorResponse{Error: "User not found"})
+			RespondWithAPIError(c, http.StatusNotFound, "User not found")
 			return
 		}
-		c.JSON(http.StatusInternalServerError, user_models.ErrorResponse{Error: err.Error()})
+		RespondWithAPIError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	RespondWithUserHATEOAS(c, http.StatusOK, user)
 }
 
 func GetUser_test(c *gin.Context) {
@@ -179,10 +186,9 @@ func GetUser_test(c *gin.Context) {
 	// 將字符串ID轉換為ObjectID
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, user_models.ErrorResponse{Error: "Invalid ID"})
+		RespondWithAPIError(c, http.StatusBadRequest, "Invalid ID")
 		return
 	}
-
 	user := user_models.User{
 		ID:        objectID,
 		Name:      "test users",
@@ -196,7 +202,7 @@ func GetUser_test(c *gin.Context) {
 		UpdatedAt: time.Now(),
 	}
 
-	c.JSON(http.StatusOK, user)
+	RespondWithUserHATEOAS(c, http.StatusOK, user)
 }
 
 // UpdateUser godoc
