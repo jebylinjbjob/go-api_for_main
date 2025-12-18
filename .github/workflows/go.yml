@@ -32,28 +32,48 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 啟動 Docker Compose 服務
-        run: |
-          docker compose up -d
-          echo "等待服務啟動..."
-          sleep 10
+      - name: Build Docker images
+        run: docker compose build
 
-      - name: 檢查服務健康狀態
+      - name: Start services (MongoDB + API)
+        run: |
+          docker compose up -d mongodb api
+          echo "Waiting for services to start and pass health checks..."
+
+      - name: Wait for API service health
+        run: |
+          echo "Waiting for API service to be ready..."
+          timeout 120 bash -c 'until docker compose ps | grep "go-api-app" | grep -q "healthy"; do echo "Waiting..."; sleep 5; done' || {
+            echo "API service health check timeout"
+            docker compose logs api
+            docker compose logs mongodb
+            exit 1
+          }
+          echo "API service is ready!"
+
+      - name: Check service status
         run: |
           docker compose ps
-          docker compose logs
+          echo "--- MongoDB logs ---"
+          docker compose logs mongodb --tail 50
+          echo "--- API logs ---"
+          docker compose logs api --tail 50
 
-      - name: 執行 Hurl API 測試
+      - name: Run Hurl API tests
         run: |
-          docker compose run --rm api-test
+          docker compose --profile test run --rm api-test
 
-      - name: 查看測試日誌
+      - name: View test logs
         if: always()
         run: |
+          echo "--- Test logs ---"
           docker compose logs api-test
+          echo "--- API logs ---"
           docker compose logs api
+          echo "--- MongoDB logs ---"
+          docker compose logs mongodb
 
-      - name: 停止並清理服務
+      - name: Stop and clean up services
         if: always()
         run: |
           docker compose down -v
