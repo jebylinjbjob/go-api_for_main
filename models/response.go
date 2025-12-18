@@ -1,5 +1,7 @@
 package user_models
 
+import "strconv"
+
 // HATEOASLink 代表 HATEOAS 連結
 // @Description HATEOAS 連結結構
 type HATEOASLink struct {
@@ -82,7 +84,7 @@ func GenerateUsersCollectionLinks(baseURL string, page int, size int, total int)
 	// 添加分頁連結
 	if page > 1 {
 		links = append(links, HATEOASLink{
-			Href:   baseURL + "/users?page=" + string(page-1) + "&size=" + string(size),
+			Href:   baseURL + "/users?page=" + strconv.Itoa(page-1) + "&size=" + strconv.Itoa(size),
 			Rel:    "prev",
 			Method: "GET",
 			Title:  "上一頁使用者",
@@ -92,7 +94,7 @@ func GenerateUsersCollectionLinks(baseURL string, page int, size int, total int)
 	totalPages := (total + size - 1) / size
 	if page < totalPages {
 		links = append(links, HATEOASLink{
-			Href:   baseURL + "/users?page=" + string(page+1) + "&size=" + string(size),
+			Href:   baseURL + "/users?page=" + strconv.Itoa(page+1) + "&size=" + strconv.Itoa(size),
 			Rel:    "next",
 			Method: "GET",
 			Title:  "下一頁使用者",
