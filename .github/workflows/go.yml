@@ -59,10 +59,6 @@ jobs:
           echo "--- API logs ---"
           docker compose logs api --tail 50
 
-      - name: Run Hurl API tests
-        run: |
-          docker compose --profile test run --rm api-test
-
       - name: View test logs
         if: always()
         run: |

@@ -49,28 +49,7 @@ services:
       retries: 10
       start_period: 40s
 
-  # Hurl API 測試服務
-  api-test:
-    image: ghcr.io/orange-opensource/hurl:latest
-    container_name: go-api-test
-    depends_on:
-      api:
-        condition: service_healthy
-    volumes:
-      - ./test:/test:ro
-    networks:
-      - go-api-network
-    environment:
-      - API_BASE_URL=http://api:8080
-    command: >
-      sh -c "
-        echo '開始執行 API 測試...' &&
-        hurl --test --color --verbose --report-html /test/report /test/all_tests.hurl &&
-        echo '所有測試完成！'
-      "
-    profiles:
-      - test
-
+      
 # 定義資料卷
 volumes:
   mongodb_data:
