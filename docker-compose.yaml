@@ -19,9 +19,9 @@ services:
       - go-api-network
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
+      start_period : 30s
+      interval: 5s
       timeout: 5s
-      retries: 5
 
   # Go API 應用程式服務
   api:
@@ -49,7 +49,7 @@ services:
       retries: 10
       start_period: 40s
 
-      
+
 # 定義資料卷
 volumes:
   mongodb_data:
