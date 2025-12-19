@@ -3,12 +3,15 @@ package main
 import (
 	"context"
 	"log"
+	"os"
+	"strings"
 	"time"
 
 	"go-api_for_main/controllers"
 	_ "go-api_for_main/docs" // 導入 swagger 文檔
 	"go-api_for_main/routes"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -68,6 +71,23 @@ func main() {
 
 	// 創建 Gin 路由器
 	r := gin.Default()
+
+	// 設定 CORS middleware
+	allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
+	if allowedOrigins == "" {
+		// 開發環境預設允許所有來源
+		allowedOrigins = "*"
+	}
+
+	corsConfig := cors.Config{
+		AllowOrigins:     strings.Split(allowedOrigins, ","),
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"},
+		ExposeHeaders:    []string{"Content-Length", "Content-Type"},
+		AllowCredentials: allowedOrigins != "*", // 當允許所有來源時不能使用憑證
+		MaxAge:           12 * time.Hour,
+	}
+	r.Use(cors.New(corsConfig))
 
 	// 設置路由
 	routes.SetupRouter(r)
