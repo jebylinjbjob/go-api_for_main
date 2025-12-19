@@ -194,7 +194,7 @@ Want to create magic together?
 MIT License (Love-filled open source license 💝)
 
 ---
-Made with ❤️, hope you can feel the warmth too! (｡♥‿♥｡) 
+Made with ❤️, hope you can feel the warmth too! (｡♥‿♥｡)
 
 
 [![image](https://github.com/jebylinjbjob/go-api_for_main/blob/main/ICON.jpeg))](https://github.com/jebylinjbjob/go-api_for_main/blob/main/ICON.jpeg)
