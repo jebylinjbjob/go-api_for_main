@@ -22,9 +22,8 @@ import (
 // @title Go API with Gin and MongoDB
 // @version 1.0
 // @description 這是一個使用 Gin 和 MongoDB 的 RESTful API 服務
-// @host localhost:8080
 // @BasePath /api/v1
-// @schemes http
+// @schemes http https
 // @produce application/json
 // @consume application/json
 

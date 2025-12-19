@@ -120,7 +120,6 @@ definitions:
         example: 100
         type: integer
     type: object
-host: localhost:8080
 info:
   contact: {}
   description: 這是一個使用 Gin 和 MongoDB 的 RESTful API 服務
@@ -282,4 +281,5 @@ produces:
 - application/json
 schemes:
 - http
+- https
 swagger: "2.0"

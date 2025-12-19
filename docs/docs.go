@@ -417,9 +417,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "",
 	BasePath:         "/api/v1",
-	Schemes:          []string{"http"},
+	Schemes:          []string{"http", "https"},
 	Title:            "Go API with Gin and MongoDB",
 	Description:      "這是一個使用 Gin 和 MongoDB 的 RESTful API 服務",
 	InfoInstanceName: "swagger",
